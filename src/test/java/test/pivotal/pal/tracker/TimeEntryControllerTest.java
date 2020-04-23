@@ -46,22 +46,6 @@ public class TimeEntryControllerTest {
         assertThat(response.getBody()).isEqualTo(expectedResult);
     }
 
-    @Test
-    public void testRead() {
-        long timeEntryId = 1L;
-        long projectId = 123L;
-        long userId = 456L;
-        TimeEntry expected = new TimeEntry(timeEntryId, projectId, userId, LocalDate.parse("2017-01-08"), 8);
-        doReturn(expected)
-            .when(timeEntryRepository)
-            .find(timeEntryId);
-
-        ResponseEntity<TimeEntry> response = controller.read(timeEntryId);
-
-        verify(timeEntryRepository).find(timeEntryId);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(expected);
-    }
 
     @Test
     public void testRead_NotFound() {
@@ -85,23 +69,6 @@ public class TimeEntryControllerTest {
         ResponseEntity<List<TimeEntry>> response = controller.list();
 
         verify(timeEntryRepository).list();
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(expected);
-    }
-
-    @Test
-    public void testUpdate() {
-        long timeEntryId = 1L;
-        long projectId = 987L;
-        long userId = 654L;
-        TimeEntry expected = new TimeEntry(timeEntryId, projectId, userId, LocalDate.parse("2017-01-07"), 4);
-        doReturn(expected)
-            .when(timeEntryRepository)
-            .update(eq(timeEntryId), any(TimeEntry.class));
-
-        ResponseEntity response = controller.update(timeEntryId, expected);
-
-        verify(timeEntryRepository).update(timeEntryId, expected);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(expected);
     }

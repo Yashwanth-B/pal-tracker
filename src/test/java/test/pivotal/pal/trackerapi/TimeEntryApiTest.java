@@ -25,17 +25,18 @@ public class TimeEntryApiTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final long projectId = 123L;
-    private final long userId = 456L;
+    private final long projectId = 123;
+    private final long userId = 456;
     private TimeEntry timeEntry = new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8);
 
     @Test
     public void testCreate() throws Exception {
+        System.out.print(timeEntry.getProjectId());
         ResponseEntity<String> createResponse = restTemplate.postForEntity("/time-entries", timeEntry, String.class);
 
 
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
+        System.out.print(createResponse.getStatusCode()+"Status");
         DocumentContext createJson = parse(createResponse.getBody());
         assertThat(createJson.read("$.id", Long.class)).isGreaterThan(0);
         assertThat(createJson.read("$.projectId", Long.class)).isEqualTo(projectId);
